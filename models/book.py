@@ -16,7 +16,7 @@ class Book(Base):
     genre = Column(String, nullable=True)
     stock = Column(Integer, default=0)
     created_at = Column(TIMESTAMP, server_default=func.now())
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=False)
     
     # Relationship to the User model
     uploader = relationship("User", back_populates="books")
