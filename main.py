@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from database.session import Base, engine
+from database.session import engine
+from models.user import User
+from models.book import Book
 
-Base.metadata.create_all(bind=engine)
-
+User.metadata.create_all(bind=engine)
+Book.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Bookstore API",
