@@ -28,7 +28,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 def authenticate_user(db: Session, email: str, password: str):
     user = db.query(User).filter(User.email == email).first()
-    if user and verify_password(password, user.password_hash):
+    if user and verify_password(password, user.hashed_password):
         return user
     return None
 

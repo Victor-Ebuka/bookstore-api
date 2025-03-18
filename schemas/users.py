@@ -28,7 +28,6 @@ class UserUpdatePassword(BaseModel):
 # Basic response schema for user (excluding password)
 class UserResponse(UserBase):
     id: UUID
-    created_at: datetime
 
     class Config:
         from_attributes = True

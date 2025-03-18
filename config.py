@@ -4,7 +4,7 @@ import os
 load_dotenv()
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-JWT_ACCESS_TOKEN_EXPIRES = os.getenv("JWT_ACCESS_TOKEN_EXPIRES")
+JWT_ACCESS_TOKEN_EXPIRES = os.getenv("JWT_ACCESS_TOKEN_EXPIRES", 15)
 PGHOST = os.getenv("PGHOST")
 PGDATABASE = os.getenv("PGDATABASE")
 PGUSER = os.getenv("PGUSER")
