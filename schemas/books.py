@@ -27,7 +27,7 @@ class BookUpdate(BaseModel):
 class BookResponse(BookBase):
     id: UUID
     created_at: datetime
-    uploader_id: UUID
+    user_id: UUID
 
     class Config:
         from_attributes = True

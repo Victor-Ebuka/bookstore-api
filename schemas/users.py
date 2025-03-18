@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
-from typing import List, Optional
+from typing import List, Literal, Optional
 from datetime import datetime
 
 # Base schema for user
@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
+    role: Literal["admin", "user"] = "user"
 
 # Schema for creating a new user
 class UserCreate(UserBase):
@@ -18,6 +19,7 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    role: Optional[Literal["admin", "user"]] = None
 
 # Schema for updating user password
 class UserUpdatePassword(BaseModel):
