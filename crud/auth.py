@@ -51,21 +51,10 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
     except JWTError:
         raise credentials_exception
 
-# # FastAPI app
-# app = FastAPI()
-
-# @app.post("/register", response_model=UserResponse)
-# def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
-
-
-
-def login_a_user(email: str, password: str, db: Session = Depends(get_db)):
+def login_a_user(email: str, password: str, db: Session):
     user = authenticate_user(db, email, password)
     if not user:
         raise HTTPException(status_code=400, detail="Invalid credentials")
     access_token = create_access_token({"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
 
-# @app.get("/profile", response_model=UserResponseDetailed)
-# def get_user_profile(current_user: User = Depends(get_current_user)):
-#     return current_user

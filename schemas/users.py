@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
-from typing import List, Literal, Optional
+from typing import Annotated, List, Literal, Optional
 from datetime import datetime
 
 # Base schema for user
@@ -35,4 +35,12 @@ class UserResponse(UserBase):
 
 # Detailed response schema with uploaded books
 class UserResponseDetailed(UserResponse):
-    books: List['BookResponse'] = []  # Prevent circular imports using string annotation
+    books: Annotated[List["BookResponse"], ...] = []   # Prevent circular imports using string annotation
+
+    @staticmethod
+    def resolve_forward_refs():
+        global BookResponse
+        from schemas.books import BookResponse
+        UserResponseDetailed.model_rebuild()
+
+UserResponseDetailed.resolve_forward_refs()

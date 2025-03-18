@@ -4,6 +4,9 @@ from fastapi.responses import RedirectResponse
 from database.session import engine
 from models.user import User
 from models.book import Book
+from routes.auth import router as auth_router
+from routes.users import router as users_router
+from routes.books import router as books_router
 
 User.metadata.create_all(bind=engine)
 Book.metadata.create_all(bind=engine)
@@ -22,6 +25,10 @@ app = FastAPI(
 @app.get("/")
 def root():
     return {"message": "Welcome to the Bookstore API!"}
+
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(books_router)
 
 @app.get("/github", include_in_schema=False)
 async def github():

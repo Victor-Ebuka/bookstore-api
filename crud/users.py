@@ -3,9 +3,9 @@ from fastapi import HTTPException
 from crud.auth import hash_password
 from models.user import User
 from sqlalchemy.orm import Session
-from schemas.users import UserCreate, UserUpdate, UserResponseDetailed, UserResponse, UserUpdatePassword
+from schemas.users import UserCreate, UserUpdate, UserUpdatePassword
 
-def create_user(user_data: UserCreate, db: Session):
+def create_user(user_data: UserCreate, db: Session) -> User:
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -30,11 +30,11 @@ def get_user_by_id(current_user: User, user_id: UUID, db: Session) -> User:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-def get_user_profile(current_user: User) -> User:
-    return UserResponseDetailed.model_validate(current_user, from_attributes=True)
+def get_a_user_profile(current_user: User) -> User:
+    return current_user
 
 def update_user_profile(current_user: User, user_data: UserUpdate, db: Session) -> User:
-    for field, value in user_data.model_dump().items():
+    for field, value in user_data.model_dump(exclude_unset=True).items():
         setattr(current_user, field, value)
     db.commit()
     db.refresh(current_user)
@@ -47,7 +47,7 @@ def update_user_password(current_user: User, user_data: UserUpdatePassword, db: 
     db.refresh(current_user)
     return current_user
 
-def delete_user(current_user: User, user_id: UUID, db: Session) -> bool:
+def delete_a_user(current_user: User, user_id: UUID, db: Session) -> bool:
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Forbidden")
     user = get_user_by_id(current_user, user_id, db)
@@ -55,7 +55,7 @@ def delete_user(current_user: User, user_id: UUID, db: Session) -> bool:
     db.commit()
     return True
 
-def delete_user_profile(current_user: User, db: Session) -> bool:
+def delete_a_user_profile(current_user: User, db: Session) -> bool:
     db.delete(current_user)
     db.commit()
     return True

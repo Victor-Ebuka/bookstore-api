@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from uuid import UUID
 from typing import Optional
 from datetime import datetime
-from schemas.books import BookResponse
 from schemas.users import UserResponse
 
 # Base schema for books
